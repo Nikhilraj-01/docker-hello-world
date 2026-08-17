@@ -1,0 +1,44 @@
+name: Deploy Docker Website
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: |
+          docker build -t docker-hello-world:latest .
+
+      - name: Stop old container
+        run: |
+          docker stop docker-hello-world || true
+
+      - name: Remove old container
+        run: |
+          docker rm docker-hello-world || true
+
+      - name: Start new container
+        run: |
+          docker run -d \
+            --name docker-hello-world \
+            --restart unless-stopped \
+            -p 127.0.0.1:3000:80 \
+            docker-hello-world:latest
+
+      - name: Check container
+        run: |
+          docker ps
+          docker logs --tail 20 docker-hello-world
+
+      - name: Test website
+        run: |
+          curl http://127.0.0.1:3000
