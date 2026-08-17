@@ -31,7 +31,7 @@ jobs:
           docker run -d \
             --name docker-hello-world \
             --restart unless-stopped \
-            -p 192.168.122.146:3000:80 \
+            -p 3000:80 \
             docker-hello-world:latest
 
       - name: Check container
