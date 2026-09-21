@@ -39,6 +39,6 @@ jobs:
           docker ps
           docker logs --tail 20 docker-hello-world
 
-      - name: Test website
+      - name: Test websites
         run: |
           curl http://127.0.0.1:3000
